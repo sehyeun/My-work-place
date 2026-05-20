@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes pulse-record {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  50% { box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+}
+
+.animate-pulse-record {
+  animation: pulse-record 1.4s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.waveform-bar {
+  animation: wave 1s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Markdown */
+.prose-meeting h1 { @apply text-2xl font-bold mt-6 mb-3 text-slate-900; }
+.prose-meeting h2 { @apply text-xl font-bold mt-5 mb-2 text-slate-900; }
+.prose-meeting h3 { @apply text-lg font-semibold mt-4 mb-2 text-slate-800; }
+.prose-meeting p  { @apply my-2 text-slate-700 leading-relaxed; }
+.prose-meeting ul { @apply list-disc pl-6 my-2 text-slate-700; }
+.prose-meeting ol { @apply list-decimal pl-6 my-2 text-slate-700; }
+.prose-meeting li { @apply my-1; }
+.prose-meeting strong { @apply font-semibold text-slate-900; }
+.prose-meeting code { @apply bg-slate-100 px-1 py-0.5 rounded text-sm font-mono; }
+.prose-meeting blockquote { @apply border-l-4 border-slate-300 pl-4 my-3 text-slate-600 italic; }
+.prose-meeting hr { @apply my-4 border-slate-200; }
+.prose-meeting table { @apply my-3 border-collapse; }
+.prose-meeting th, .prose-meeting td { @apply border border-slate-300 px-3 py-1.5 text-sm; }
+.prose-meeting th { @apply bg-slate-50 font-semibold; }
