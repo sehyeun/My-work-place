@@ -12,11 +12,33 @@
 
 | 종류 | 위치 | 비고 |
 |------|------|------|
-| 제품/기능 PRD | `docs/prd/YYYY-MM-DD-<slug>.md` | `/prd` 슬래시 또는 `prd-writer` 스킬 |
+| 제품 기획 산출물 (전체) | `docs/planning/YYYY-MM-DD-<slug>/` | `/plan-product` 또는 단계별 스킬 |
+| ├─ 시나리오 | `01-scenarios.md` | `scenario-writer` |
+| ├─ 와이어프레임 | `02-wireframes.md` | `wireframe-designer` |
+| ├─ 데이터 모델 | `03-data-model.md` | `data-modeler` |
+| ├─ 인터랙션 | `04-interactions.md` | `interaction-designer` |
+| └─ PRD | `05-prd.md` (+`docs/prd/` 사본) | `prd-writer` (합성 모드) |
+| 제품/기능 PRD (단독) | `docs/prd/YYYY-MM-DD-<slug>.md` | `/prd` (인터뷰 모드) |
 | 회의록 | `docs/meetings/YYYY-MM-DD-<slug>.md` | 회의록 자동화 봇이 PR로 생성 |
 | 기획/계획 | `PLAN.md`, `docs/plans/*.md` | 큰 그림 |
 
 신규 산출물은 위 위치를 따르세요. 임시 파일/메모를 루트에 만들지 마세요.
+
+## 제품 기획 파이프라인
+
+개발 착수 전 전체 기획은 다음 5단계로 진행합니다. 자세한 워크플로우는 각 스킬의 SKILL.md 참고.
+
+```
+1. Scenario   — 회원가입~업무 완료 사용자 여정    (scenario-writer)
+2. Wireframe  — 시나리오별 화면 와이어프레임      (wireframe-designer)
+3. DataModel  — 화면이 다루는 데이터 구조         (data-modeler)
+4. Interaction— UI 이벤트별 시스템 흐름           (interaction-designer)
+5. PRD        — 1~4 종합한 최종 요구사항 문서     (prd-writer 합성 모드)
+```
+
+- 전체 파이프라인: `/plan-product` 또는 "제품 기획하자" → `product-planner` 스킬
+- 단계 단독: `/scenario`, `/wireframe`, `/data-model`, `/interactions`, `/prd`
+- 모든 스테이지는 이전 산출물을 `Read`해서 입력으로 사용. 일관성 유지가 핵심.
 
 ## PRD 작성 규칙
 

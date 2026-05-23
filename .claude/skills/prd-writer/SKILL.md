@@ -5,6 +5,17 @@ description: Use when the user wants to write, draft, update, or revise a Produc
 
 # PRD Writer
 
+## 두 가지 모드
+
+이 스킬은 두 가지 모드로 동작합니다.
+
+| 모드 | 진입 조건 | 동작 |
+|------|-----------|------|
+| **A. 인터뷰 모드** (기본) | 단독 호출 (`/prd`, 또는 산출물 폴더 없음) | Step 0부터 인터뷰로 정보 수집 후 작성 |
+| **B. 합성 모드** | `docs/planning/<slug>/01-scenarios.md` ~ `04-interactions.md`가 모두 존재 | 인터뷰 건너뛰고 산출물 종합. 미해결 `🟡`만 사용자에게 묶어 확인 |
+
+`product-planner` 오케스트레이터의 Stage 5로 호출될 때는 자동으로 **합성 모드**. 사용자가 `/prd`를 직접 호출하면 **인터뷰 모드**가 기본이지만, 같은 슬러그의 이전 산출물이 존재하면 사용자에게 "합성 모드로 진행할까요?" 한 번 확인.
+
 ## When to invoke
 
 **Trigger on:**
@@ -13,6 +24,7 @@ description: Use when the user wants to write, draft, update, or revise a Produc
 - "이 기능 정의서 만들자"
 - "write/draft/create a PRD"
 - 사용자가 새 제품·기능을 설명하면서 문서화를 원하는 경우
+- `product-planner` 오케스트레이터의 Stage 5
 
 **Do NOT trigger on:**
 - 일반적인 제품 관련 Q&A ("이 기능 어떻게 구현해?")
@@ -109,6 +121,58 @@ docs/prd/YYYY-MM-DD-<slug>.md
 ```
 
 (`docs/prd/` 디렉토리가 없으면 생성)
+
+## 합성 모드 워크플로우 (모드 B)
+
+`product-planner` Stage 5 또는 같은 슬러그의 산출물이 모두 존재할 때.
+
+### B-Step 1: 4개 산출물 모두 `Read`
+
+```
+docs/planning/<slug>/01-scenarios.md
+docs/planning/<slug>/02-wireframes.md
+docs/planning/<slug>/03-data-model.md
+docs/planning/<slug>/04-interactions.md
+```
+
+각 파일에서 다음 추출:
+- 01에서: 페르소나, 핵심 시나리오, 분기, Open Questions
+- 02에서: 화면 목록, 사이트맵, 인터랙션 포인트
+- 03에서: 엔티티, ER, 데이터 변화 매핑
+- 04에서: 이벤트별 시퀀스, 횡단 관심사
+
+### B-Step 2: 미해결 `🟡` 묶음 확인
+
+4개 파일에서 `🟡 [확인 필요]` 모두 모아 사용자에게 한 번에 제시:
+
+> "다음 항목들이 아직 미정으로 남아있습니다. PRD 확정 전에 채울 수 있는 것 있나요?
+> 1. 🟡 ...
+> 2. 🟡 ...
+> (그대로 두고 진행해도 됩니다 — PRD의 Open Questions 섹션에 보존됩니다)"
+
+### B-Step 3: 풀 PRD 종합 작성
+
+`template-product.md`를 기반으로 종합. 인터뷰 모드보다 풍부한 PRD가 됨:
+
+- **6장 User Stories** ← 01 시나리오
+- **3장 사용자** ← 01 페르소나
+- **7장 기능 요구사항** ← 02 와이어프레임의 인터랙션 포인트 + 04 이벤트 목록
+- **부록 — 화면 와이어프레임** ← 02 인용
+- **부록 — 데이터 모델** ← 03 인용 (ER + 엔티티 표)
+- **부록 — 인터랙션 다이어그램** ← 04 인용 (핵심 5개만 포함, 전체는 04 파일 링크)
+- **9장 엣지 케이스** ← 04 실패 경로 + 01 분기 시나리오
+- **14장 Open Questions** ← 1~4의 미해결 `🟡` 모음
+
+각 부록은 원본 파일 링크 + 핵심 다이어그램만 인용 (전체 복붙 금지, 파일이 비대해짐).
+
+### B-Step 4: 저장
+
+```
+docs/planning/<slug>/05-prd.md
+docs/prd/<YYYY-MM-DD>-<slug>.md  ← 사본
+```
+
+두 곳에 동일한 내용 저장.
 
 ## 사용해야 할 템플릿
 
